@@ -27,3 +27,7 @@
 *.exe
 *.out
 *.app
+
+# VIM Temp File
+*.swp
+*.swo
