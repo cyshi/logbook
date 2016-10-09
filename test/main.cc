@@ -38,9 +38,9 @@ void task()
     count++;
 }
 
-void* test(void* p)
+void* test(void* /*args*/)
 {
-    ThreadPool* tp = (ThreadPool*)p;
+    ThreadPool* tp = ThreadPool::get_instance();
     while (tp->add_task(boost::bind(task)))
     { }
     return NULL;
@@ -48,13 +48,13 @@ void* test(void* p)
 
 int main(int /*argc*/, const char** /*argv[]*/)
 {
-    ThreadPool tp;
-    tp.start(1);
+    ThreadPool* tp = ThreadPool::get_instance();
+    tp->start(1);
     std::vector<pthread_t> pids;
     for (int i = 0; i < 30; ++i)
     {
         pthread_t pid;
-        pthread_create(&pid, NULL, test, (void *)&tp);
+        pthread_create(&pid, NULL, test, NULL);
         pids.push_back(pid);
     }
 
@@ -71,7 +71,6 @@ int main(int /*argc*/, const char** /*argv[]*/)
         pthread_join(pids[i], NULL);
     }
 
-    tp.stop();
-
+    tp->stop();
     return 0;
 }

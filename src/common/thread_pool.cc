@@ -18,6 +18,10 @@ namespace detail
 extern __thread
 common::WorkStealingQueue<common::WorkerThread::ThreadFunc>* tls_queue;
 
+static pthread_once_t thread_pool_create_once = PTHREAD_ONCE_INIT;
+static common::ThreadPool* g_thread_pool = NULL;
+
+
 class ThreadExitHelper 
 {
 public:
@@ -110,6 +114,7 @@ ThreadPool::ThreadPool()
 ThreadPool::~ThreadPool()
 {
     stop();
+    free(_queues);
 }
 
 bool ThreadPool::start(size_t thread_num)
@@ -238,17 +243,31 @@ void ThreadPool::destroy_queue()
         }
     }
     _nqueue.store(nqueue - 1, boost::memory_order_seq_cst);
-
-    if (_nqueue == 0)
-    {
-        free(_queues);
-    }
     }
 
     // avoid other threads is stealing
     usleep(1000000L);
     delete detail::tls_queue;
     detail::tls_queue = NULL;
+}
+
+ThreadPool* ThreadPool::get_instance()
+{
+    pthread_once(&detail::thread_pool_create_once,
+                 &ThreadPool::create_thread_pool);
+    return detail::g_thread_pool;
+}
+
+void ThreadPool::destroy_thread_pool()
+{
+    delete detail::g_thread_pool;
+    detail::g_thread_pool = NULL;
+}
+    
+void ThreadPool::create_thread_pool()
+{
+    detail::g_thread_pool = new ThreadPool();
+    ::atexit(&ThreadPool::destroy_thread_pool);
 }
 
 } // end namespace common

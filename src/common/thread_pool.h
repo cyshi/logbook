@@ -24,10 +24,6 @@ namespace common
 class ThreadPool : public boost::noncopyable
 {
 public:
-    ThreadPool();
-
-    ~ThreadPool();
-    
     /// @brief start 
     /// before add_task must call start first
     /// this function will create threads, and thread runtime env
@@ -51,7 +47,23 @@ public:
     /// @return return false when thread pool not start
     bool add_task(const WorkerThread::ThreadFunc& task);
 
+    /// @brief get_instance 
+    ///
+    /// @return the instance of thread_pool
+    /// thread pool must be a global variable, because we use work stealing
+    /// queue per thread, including user thread
+    static ThreadPool* get_instance();
+
 private:
+    ThreadPool();
+
+    ~ThreadPool();
+
+    static void destroy_thread_pool();
+    
+    static void create_thread_pool();
+
+
     // threads main task
     void main_task();
 
