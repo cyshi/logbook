@@ -21,7 +21,6 @@ common::WorkStealingQueue<common::WorkerThread::ThreadFunc>* tls_queue;
 static pthread_once_t thread_pool_create_once = PTHREAD_ONCE_INIT;
 static common::ThreadPool* g_thread_pool = NULL;
 
-
 class ThreadExitHelper 
 {
 public:
