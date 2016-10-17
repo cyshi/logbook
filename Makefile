@@ -25,10 +25,15 @@ include depends.mk
 
 LIB=liblogbook.a
 LIB_SRC=$(wildcard src/common/*.cc) \
-		$(wildcard src/core/*.cc) \
-		$(wildcard src/log/*.cc) \
-		$(wildcard src/rpc/*.cc) 
+		$(wildcard src/core/*.cc)   \
+		$(wildcard src/log/*.cc)    \
+		$(wildcard src/rpc/*.cc)    \
+		$(wildcard src/proto/*.cc)
 LIB_OBJ=$(patsubst %.cc,%.o,$(LIB_SRC))
+PROTO=$(wildcard src/proto/*.proto)
+PROTO_SRC=$(patsubst %.proto,%.pb.cc,$(PROTO))
+PROTO_HEADER=$(patsubst %.proto,%.pb.h,$(PROTO))
+PROTO_OBJ=$(patsubst %.cc,%.o,$(PROTO_SRC))
 
 BIN=logbook
 BIN_SRC=$(wildcard test/*.cc)
@@ -54,10 +59,10 @@ endif
 #-----------------------------------------------
 
 CXX=g++
-INCPATH=-Isrc -I$(BOOST_HEADER_DIR)
+INCPATH=-Isrc -I$(BOOST_HEADER_DIR) -I$(PROTOBUF_DIR)/include
 CXXFLAGS += $(OPT) -pipe -W -Wall -fPIC -D_GNU_SOURCE -D__STDC_LIMIT_MACROS $(INCPATH)
 
-LDFLAGS += -lpthread
+LDFLAGS += -L$(PROTOBUF_DIR)/lib -lprotobuf -lpthread
 .PHONY: check_depends build rebuild clean
 
 all: build
@@ -66,15 +71,22 @@ check_depends:
 	@if [ ! -f "$(BOOST_HEADER_DIR)/boost/smart_ptr.hpp" ]; then echo "ERROR: need boost header"; exit 1; fi
 
 clean:
-	rm -f $(LIB) $(BIN) $(LIB_OBJ) $(BIN_OBJ)
+	rm -f $(LIB) $(BIN) $(LIB_OBJ) $(PROTO_OBJ) $(BIN_OBJ) $(PROTO_HEADER) $(PROTO_SRC)
 
 rebuild: clean all
 
-$(LIB): $(LIB_OBJ)
-	ar crs $@ $(LIB_OBJ)
+$(PROTO_OBJ): $(PROTO_HEADER)
+
+$(LIB_OBJ): $(PROTO_HEADER)
+
+$(LIB): $(LIB_OBJ) $(PROTO_OBJ)
+	ar crs $@ $(LIB_OBJ) $(PROTO_OBJ)
 
 $(BIN): $(LIB) $(BIN_OBJ)
 	$(CXX) $(BIN_OBJ) -o $@ $(LIB) $(LDFLAGS)
+
+%.pb.cc %.pb.h: %.proto
+	${PROTOBUF_DIR}/bin/protoc --proto_path=./src/proto --proto_path=${PROTOBUF_DIR}/include --cpp_out=./src/proto $<
 
 %.o: %.cc
 	$(CXX) $(CXXFLAGS) -c $< -o $@

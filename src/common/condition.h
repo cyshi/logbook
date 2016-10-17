@@ -5,8 +5,8 @@
 // Author: shichengyi@baidu.com (Shi Chengyi)
 // Data:2016-10-14 17:08
 
-#ifndef BAIDU_LOGBOOK_Condition_H
-#define BAIDU_LOGBOOK_Condition_H
+#ifndef BAIDU_LOGBOOK_CONDITION_H
+#define BAIDU_LOGBOOK_CONDITION_H
 
 #include <boost/noncopyable.hpp>
 #include <common/mutex.h>

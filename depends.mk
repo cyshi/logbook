@@ -15,3 +15,11 @@
 #BOOST_HEADER_DIR=/home/users/qinzuoyan01/libs/boost_1_53_0
 BOOST_HEADER_DIR=/home/shichengyi/project/boost.bak/include
 ################################################################
+
+################################################################
+SOFA_PBRPC_DIR=/home/shichengyi/project/sofa-pbrpc/output
+################################################################
+
+################################################################
+PROTOBUF_DIR=/home/shichengyi/project/protobuf
+################################################################
