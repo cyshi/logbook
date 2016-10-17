@@ -18,7 +18,7 @@ namespace common
 {
 
 template <class T>
-class WorkStealingQueue : public boost::noncopyable 
+class WorkStealingQueue : boost::noncopyable
 {
 public:
     WorkStealingQueue()

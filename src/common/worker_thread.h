@@ -18,7 +18,7 @@ namespace logbook
 namespace common
 {
 
-class WorkerThread : public boost::noncopyable
+class WorkerThread : boost::noncopyable
 {
 public:
     typedef boost::function<void ()> ThreadFunc;

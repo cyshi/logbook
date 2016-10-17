@@ -21,7 +21,7 @@ namespace logbook
 namespace common
 {
 
-class ThreadPool : public boost::noncopyable
+class ThreadPool : boost::noncopyable
 {
 public:
     /// @brief start 

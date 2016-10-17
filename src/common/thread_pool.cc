@@ -165,7 +165,7 @@ ThreadPool::WorkerQueuePtr ThreadPool::get_or_create_queue()
     }
 
     {
-        MutexLock l(&_mu);
+        MutexLockGuard l(_mu);
         const size_t nqueue = _nqueue.load(boost::memory_order_relaxed);
         _queues[nqueue] = detail::tls_queue;
         _nqueue.store(nqueue + 1, boost::memory_order_relaxed);
@@ -231,7 +231,7 @@ void ThreadPool::destroy_queue()
     }
 
     {
-    MutexLock l(&_mu);
+    MutexLockGuard l(_mu);
     size_t nqueue = _nqueue.load(boost::memory_order_relaxed);
     for (size_t i = 0; i < nqueue; ++i) 
     {

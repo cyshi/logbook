@@ -16,7 +16,7 @@ namespace logbook
 namespace common
 {
 
-class Mutex : public boost::noncopyable
+class Mutex : boost::noncopyable
 {
 public:
     Mutex() 
@@ -39,12 +39,17 @@ public:
         pthread_mutex_unlock(&_mu);
     }
 
+    pthread_mutex_t* get_pthread_mutex()
+    {
+        return &_mu;
+    }
+
 private:
     pthread_mutex_t _mu;
 };
 
 template <class T>
-class LockGuard : public boost::noncopyable
+class LockGuard : boost::noncopyable
 {
 public:
     explicit LockGuard(T& mu) : _mu(mu)

@@ -16,7 +16,7 @@ namespace logbook
 namespace core
 {
 
-class RaftServerImpl : public boost::noncopyable
+class RaftServerImpl : boost::noncopyable
 {
 public:
     RaftServerImpl();
