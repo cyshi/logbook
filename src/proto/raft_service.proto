@@ -1,0 +1,9 @@
+package logbook.protocol;
+
+import "append_entries.proto";
+
+option cc_generic_services = true;
+
+service RaftService {
+    rpc AppendEntries(AppendEntriesRequest) returns(AppendEntriesResponse);
+}

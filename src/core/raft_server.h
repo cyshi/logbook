@@ -16,10 +16,10 @@
 namespace logbook
 {
 
-namespace log
+namespace protocol
 {
 class LogEntry;
-} // end namespace log
+} // end namespace protocol
 
 namespace core
 {
@@ -43,7 +43,7 @@ public:
     void set_leadership_change_callback(const LeadershipChangeCallback& cb);
 
     typedef boost::function<
-        void (const logbook::log::LogEntry&)
+        void (const logbook::protocol::LogEntry&)
         > ApplyCommittedCallback;
     void set_apply_committed_callback(ApplyCommittedCallback& cb);
 

@@ -1,8 +1,12 @@
-package logbook.core;
+package logbook.protocol;
 
 message LogEntry {
+
     required uint64 index = 1;
+
     required uint64 term = 2;
+
     required string command_name = 3;
+
     optional bytes command = 4;
 }
