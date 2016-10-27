@@ -15,12 +15,12 @@ namespace core
 RaftServerImpl::RaftServerImpl() { }
 RaftServerImpl::~RaftServerImpl() { }
 
-bool RaftServerImpl::start(const Configure& conf)
+bool RaftServerImpl::start(const Configure& /*conf*/)
 {
     return false;
 }
 
-Result RaftServerImpl::submit_command(const Command& cmd)
+Result RaftServerImpl::submit_command(const Command& /*cmd*/)
 {
     return SUCCESS;
 }

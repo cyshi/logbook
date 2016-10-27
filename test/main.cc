@@ -5,6 +5,7 @@
 // Author: shichengyi@baidu.com (Shi Chengyi)
 // Data:2016-10-04 16:59
 
+#include <stdio.h>
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 #include <common/thread_pool.h>
